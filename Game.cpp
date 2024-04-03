@@ -36,7 +36,7 @@ void Game::run()
         m_entities.update();
         sMovement();
         // sCollision();
-        // sSteering();
+        sSteering();
 
         sUserInput();
         sRender();
@@ -163,50 +163,50 @@ void Game::sSteering()
     {
         if (e->cTransform)
         {
-            int thisId = e->id();
-            float thisPosX = e->cTransform->pos.x;
-            float thisPosY = e->cTransform->pos.y;
+            //         int thisId = e->id();
+            //         float thisPosX = e->cTransform->pos.x;
+            //         float thisPosY = e->cTransform->pos.y;
 
             if (e->cSteering && e->cMovePoint)
             {
                 for (const auto &direction : e->cSteering->rayDirections)
                 {
-                    // Calculate the end point of the line
+                    //                 // Calculate the end point of the line
                     Vector2 endPoint = {e->cTransform->pos.x + direction.x * e->cSteering->lookAhead,
                                         e->cTransform->pos.y + direction.y * e->cSteering->lookAhead};
 
                     // Draw rays (for demonstration)
                     DrawLine(e->cTransform->pos.x, e->cTransform->pos.y, endPoint.x, endPoint.y, BLACK);
 
-                    // handle ray intersection
-                    for (int i = 0; i < e->cSteering->numRays; ++i)
-                    {
-                        // Calculate the end point of the line
-                        Vector2 endPoint = {e->cTransform->pos.x + direction.x * e->cSteering->lookAhead,
-                                            e->cTransform->pos.y + direction.y * e->cSteering->lookAhead};
-                        for (auto &e : m_entities.getEntities())
-                        {
-                            // ignore self collision
-                            if (e->id() != thisId)
-                            {
-                                std::vector<Line> eRectLines = getRectangleLines(e->cTransform->pos.x, e->cTransform->pos.y, e->cShape->width, e->cShape->height);
-                                for (const auto &line : eRectLines)
-                                {
-                                    // check against each ray's start and end and each rect's start and end
-                                    // p1 is one endpoint of the first line segment.
-                                    // q1 is the other endpoint of the first line segment.
-                                    bool isIntersection = doLinesIntersect({thisPosX, thisPosY}, {endPoint.x, endPoint.y}, {static_cast<float>(line.startX), static_cast<float>(line.startY)}, {static_cast<float>(line.endX), static_cast<float>(line.endY)});
-                                    if (isIntersection)
-                                    {
-                                        std::cout << "intersection" << std::flush;
-                                    }
-                                    else
-                                    {
-                                    }
-                                }
-                            }
-                        }
-                    }
+                    //                 // handle ray intersection
+                    //                 for (int i = 0; i < e->cSteering->numRays; ++i)
+                    //                 {
+                    //                     // Calculate the end point of the line
+                    //                     Vector2 endPoint = {e->cTransform->pos.x + direction.x * e->cSteering->lookAhead,
+                    //                                         e->cTransform->pos.y + direction.y * e->cSteering->lookAhead};
+                    //                     for (auto &e : m_entities.getEntities())
+                    //                     {
+                    //                         // ignore self collision
+                    //                         if (e->id() != thisId)
+                    //                         {
+                    //                             std::vector<Line> eRectLines = getRectangleLines(e->cTransform->pos.x, e->cTransform->pos.y, e->cShape->width, e->cShape->height);
+                    //                             for (const auto &line : eRectLines)
+                    //                             {
+                    //                                 // check against each ray's start and end and each rect's start and end
+                    //                                 // p1 is one endpoint of the first line segment.
+                    //                                 // q1 is the other endpoint of the first line segment.
+                    //                                 bool isIntersection = doLinesIntersect({thisPosX, thisPosY}, {endPoint.x, endPoint.y}, {static_cast<float>(line.startX), static_cast<float>(line.startY)}, {static_cast<float>(line.endX), static_cast<float>(line.endY)});
+                    //                                 if (isIntersection)
+                    //                                 {
+                    //                                     std::cout << "intersection" << std::flush;
+                    //                                 }
+                    //                                 else
+                    //                                 {
+                    //                                 }
+                    //                             }
+                    //                         }
+                    //                     }
+                    //                 }
                 }
             }
         }
