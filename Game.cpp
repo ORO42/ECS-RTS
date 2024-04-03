@@ -23,7 +23,7 @@ void Game::init()
     SetTargetFPS(60);
     SetWindowPosition(0, 0);
     spawnUnit();
-    drawRectangularGrid(32, 32);
+    // drawRectangularGrid(32, 32);
 }
 
 void Game::run()
@@ -55,6 +55,7 @@ void Game::setPaused(bool paused)
 void Game::spawnUnit()
 {
     auto entity = m_entities.addEntity("unit");
+    // auto entity2 = m_entities.addEntity("unit2");
 
     entity->cTransform = std::make_shared<CTransform>((Vector2){500.0f, 500.0f}, 0.0f);
 
