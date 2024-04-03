@@ -23,7 +23,7 @@ void Game::init()
     SetTargetFPS(60);
     SetWindowPosition(0, 0);
     spawnUnit();
-    // drawRectangularGrid(32, 32);
+    spawnRectangularGrid(32, 32);
 }
 
 void Game::run()
@@ -36,7 +36,7 @@ void Game::run()
         m_entities.update();
         sMovement();
         // sCollision();
-        sSteering();
+        // sSteering();
 
         sUserInput();
         sRender();
@@ -55,11 +55,10 @@ void Game::setPaused(bool paused)
 void Game::spawnUnit()
 {
     auto entity = m_entities.addEntity("unit");
-    // auto entity2 = m_entities.addEntity("unit2");
 
     entity->cTransform = std::make_shared<CTransform>((Vector2){500.0f, 500.0f}, 0.0f);
 
-    entity->cShape = std::make_shared<CShape>(entity->cTransform->pos.x, entity->cTransform->pos.y, 20.0f, 20.0f);
+    entity->cShape = std::make_shared<CShape>(entity->cTransform->pos.x, entity->cTransform->pos.y, 32.0f, 32.0f);
     entity->cShape->color = {255, 0, 0, 255};
 
     entity->cSelectable = std::make_shared<CSelectable>();
@@ -67,16 +66,10 @@ void Game::spawnUnit()
     entity->cSteering = std::make_shared<CSteering>(8, 60, 0.1f);
 }
 
-// void Game::spawnEnemy()
-// {
-//     // spawn within bounds of window
-//     m_lastEnemySpawnTime = m_currentFrame;
-// }
-
 void Game::sMovement()
 {
     // all entity movement in this function
-    for (auto &e : m_entities.getEntities())
+    for (auto &e : m_entities.getEntities("unit"))
     {
         if (e->isActive())
         {
@@ -223,14 +216,13 @@ void Game::sSteering()
 void Game::sSpawnTile(int tlx, int tly)
 {
     auto entity = m_entities.addEntity("tile");
-    std::cout << "sSpawnTile()" << std::flush << std::endl;
     entity->cTile = std::make_shared<CTile>(tlx, tly);
     entity->cTile->topLeftX = tlx;
     entity->cTile->topLeftY = tly;
     entity->cTile->coord = getPositionOnGameboard(tlx, tly);
 }
 
-void Game::drawRectangularGrid(int width, int height)
+void Game::spawnRectangularGrid(int width, int height)
 {
     for (int y = 0; y < height; ++y)
     {
@@ -238,7 +230,7 @@ void Game::drawRectangularGrid(int width, int height)
         {
             int tlx = x * m_tileSize;
             int tly = y * m_tileSize;
-            // sSpawnTile(tlx, tly); // TODO getting segmentation fault here
+            sSpawnTile(tlx, tly);
         }
     }
 }
@@ -303,14 +295,21 @@ void Game::sRender()
 {
     BeginDrawing();
 
-    // draw all entities
+    // draw all tiles
+    for (auto &e : m_entities.getEntities("tile"))
+    {
+        DrawRectangleLines(e->cTile->topLeftX, e->cTile->topLeftY, m_tileSize, m_tileSize, BLACK);
+    }
+
     for (auto &e : m_entities.getEntities())
     {
-        // draw
-        DrawRectangle(e->cTransform->pos.x, e->cTransform->pos.y, e->cShape->width, e->cShape->height, e->cShape->color);
-        if (e->cMovePoint)
+        if (e->cTransform && e->cShape)
         {
-            DrawLineEx(e->cTransform->pos, e->cMovePoint->pos, 1.0f, {0, 0, 0, 255});
+            DrawRectangle(e->cTransform->pos.x, e->cTransform->pos.y, e->cShape->width, e->cShape->height, e->cShape->color);
+            if (e->cMovePoint)
+            {
+                DrawLineEx(e->cTransform->pos, e->cMovePoint->pos, 1.0f, {0, 0, 0, 255});
+            }
         }
     }
 

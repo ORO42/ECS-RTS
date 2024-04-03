@@ -7,7 +7,6 @@ class Game
 {
     EntityManager m_entities; // vector of entities to maintain
     int m_currentFrame = 0;
-    int m_lastEnemySpawnTime = 0;
     bool m_paused = false;
     bool m_running = true;
     bool m_isSelecting = false;
@@ -25,7 +24,7 @@ class Game
     void sSteering();
 
     void sSpawnTile(int tlx, int tly);
-    void drawRectangularGrid(int width, int height);
+    void spawnRectangularGrid(int width, int height);
 
     void sUserInput();
 

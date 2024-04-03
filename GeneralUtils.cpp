@@ -1,5 +1,3 @@
-// generalUtils.cpp
-
 #include <iostream>
 #include <cmath>
 #include <vector>
@@ -31,65 +29,6 @@ Vector2 getRectVCenter(const Vector2 rectPos, const Vector2 size)
 
     // Return the center point
     return {centerX, centerY};
-}
-
-bool isLineIntersectingRec(const Vector2 &start, const Vector2 &end, const Rectangle &rect)
-{
-    // Check if the line segment intersects any of the rectangle's sides
-
-    float x1 = rect.x;
-    float y1 = rect.y;
-    float x2 = rect.x + rect.width;
-    float y2 = rect.y;
-    float x3 = rect.x + rect.width;
-    float y3 = rect.y + rect.height;
-    float x4 = rect.x;
-    float y4 = rect.y + rect.height;
-
-    // Calculate the direction vectors of the rectangle's sides
-    float dx1 = x2 - x1;
-    float dy1 = y2 - y1;
-    float dx2 = x3 - x2;
-    float dy2 = y3 - y2;
-    float dx3 = x4 - x3;
-    float dy3 = y4 - y3;
-    float dx4 = x1 - x4;
-    float dy4 = y1 - y4;
-
-    // Calculate the normal vectors of the rectangle's sides
-    float nx1 = -dy1;
-    float ny1 = dx1;
-    float nx2 = -dy2;
-    float ny2 = dx2;
-    float nx3 = -dy3;
-    float ny3 = dx3;
-    float nx4 = -dy4;
-    float ny4 = dx4;
-
-    // Calculate the vectors from start point to rectangle vertices
-    float vx1 = x1 - start.x;
-    float vy1 = y1 - start.y;
-    float vx2 = x2 - start.x;
-    float vy2 = y2 - start.y;
-    float vx3 = x3 - start.x;
-    float vy3 = y3 - start.y;
-    float vx4 = x4 - start.x;
-    float vy4 = y4 - start.y;
-
-    // Check if the vectors are on the same side of the line
-    bool side1 = (vx1 * nx1 + vy1 * ny1) * (end.x - start.x) + (vx1 * dx1 + vy1 * dy1) * (end.y - start.y) >= 0;
-    bool side2 = (vx2 * nx2 + vy2 * ny2) * (end.x - start.x) + (vx2 * dx2 + vy2 * dy2) * (end.y - start.y) >= 0;
-    bool side3 = (vx3 * nx3 + vy3 * ny3) * (end.x - start.x) + (vx3 * dx3 + vy3 * dy3) * (end.y - start.y) >= 0;
-    bool side4 = (vx4 * nx4 + vy4 * ny4) * (end.x - start.x) + (vx4 * dx4 + vy4 * dy4) * (end.y - start.y) >= 0;
-
-    // If all sides have the same orientation, the line does not intersect the rectangle
-    if (side1 == side2 && side2 == side3 && side3 == side4)
-    {
-        return false;
-    }
-
-    // Otherwise, the line intersects the rectangle
-    return true;
 }
 
 // Function to calculate the lines making up a rectangle
